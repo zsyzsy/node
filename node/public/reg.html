@@ -1,0 +1,116 @@
+ <!DOCTYPE html>
+<html lang="en" ng-app="mainApp">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container{
+            width: 600px;
+            margin: 0 auto;
+        }
+        #ben{
+            width: 200px;
+            border-radius:15px ;
+            margin-left: 120px;
+        }
+    </style>
+    <script src="js/angular.min.js"></script>
+    <script>
+        var mainApp = angular.module("mainApp",[]);
+            mainApp.controller("regController",function($scope,$http){
+                $scope.onName=function(){
+                    if($scope.username&&/^[0-9a-zA-Z]{6,20}$/.test($scope.username)){
+                        $http.post("/users/validateName",{name:$scope.username}).success(function(isUse){
+                            console.log(isUse);
+                            if(isUse=='true'){
+                        $scope.tishi1="正确";
+                                $scope.color1="green";
+                            }else{
+                                $scope.tishi1="用户名已存在";
+                                $scope.color1="red";
+                            }
+                        });
+
+                    }
+                };
+                $scope.onPassword=function(){
+                    if(/^[0-9a-zA-Z]{6,20}$/.test($scope.password)){
+                        $scope.tishi2="正确";
+                        $scope.color2="green";
+                    }else{
+                        $scope.tishi2="不正确";
+                        $scope.color2="red";
+                    }
+                };
+                $scope.onEmail=function(){
+                    if(/^(^([0-9]{8,11}@qq\.com)$|(^([A-Za-z]+)\@(|136|147)\.com)$)$/.test($scope.email)){
+                        $scope.tishi3="正确";
+                        $scope.color3="green";
+                    }else{
+                        $scope.tishi3="不正确";
+                        $scope.color3="red";
+                    }
+                };
+                $scope.onSex=function(){
+                    if(/^(男|女)$/.test($scope.sex)){
+                        $scope.tishi4="正确";
+                        $scope.color4="green";
+                    }else{
+                        $scope.tishi4="不正确";
+                        $scope.color4="red";
+                    }
+                };
+                $scope.regBtn=function(){
+                   if(($scope.color1=="green")&&($scope.color2=="green")&&($scope.color3=="green")&&($scope.color4=="green")){
+                       $http.post("/users/reg",{name:$scope.username,pwd:$scope.password,email:$scope.email,sex:$scope.sex}).success(function(){
+                               window.location="login.html";
+                        })
+                    }
+                }
+            })
+    </script>
+</head>
+<body ng-controller="regController">
+<div  class="container all">
+<form class="form-horizontal" role="form">
+    <div class="form-group">
+        <label for="inputEmail3" class="col-sm-2 control-label">用户名：</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" ng-model="username" ng-blur="onName()" id="inputEmail3" placeholder="username">
+            <label for="" ng-style="{color:color1}">{{tishi1}}</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">密码：</label>
+        <div class="col-sm-10">
+            <input type="password" ng-model="password" ng-blur="onPassword()" class="form-control" id="inputPassword3" placeholder="Password">
+            <label for="" ng-style="{color:color2}">{{tishi2}}</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputEmail" class="col-sm-2 control-label">邮箱：</label>
+        <div class="col-sm-10">
+            <input type="text" ng-model="email" ng-blur="onEmail()" class="form-control" id="inputEmail" placeholder="email">
+            <label for="" ng-style="{color:color3}">{{tishi3}}</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputemail" class="col-sm-2 control-label">性别：</label>
+        <div class="col-sm-10">
+            <input type="text" ng-model="sex" ng-blur="onSex()" class="form-control" id="inputEmail1" placeholder="sex">
+            <label for="" ng-style="{color:color4}">{{tishi4}}</label>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="button" ng-click="regBtn()" id="ben" class="btn btn-default btn-success">注册</button>
+        </div>
+    </div>
+</form>
+</div>
+
+
+</body>
+
+</html>

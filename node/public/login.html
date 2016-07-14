@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html ng-app="mainApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <title></title>
+    <style>
+        .container{
+            width:600px !important;
+            margin: 0 auto;
+        }
+        .btn{
+            margin:0 auto;
+            width: 200px;
+            border-radius:15px ;
+        }
+        #btn{
+            margin-left: 120px;
+        }
+    </style>
+    <script src="js/angular.min.js"></script>
+    <script>
+        var logMainApp=angular.module("mainApp",[]);
+        logMainApp.controller("logController",function($scope,$http){
+            $scope.logBtn=function(){
+                $http.post("/users/login",{username:$scope.name,password:$scope.password}).success(function(data){
+                    if(data=='true'){
+                        console.log(data);
+                        window.location="homePage.html";
+                    }
+                })
+            }
+        })
+    </script>
+</head>
+<body ng-controller="logController">
+<div class="container all">
+    <form action="#" class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label" >用户名：</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="inputEmail3" name="username"  placeholder="username" ng-model="name">
+                <span></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">密&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="Password" ng-model="password">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" id="btn"  class="btn btn-info" ng-click="logBtn()">登录</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
